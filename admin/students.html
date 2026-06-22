@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Students | VISIONARYTECH TITAN</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:#0f172a;
+color:white;
+overflow-x:hidden;
+font-family:Segoe UI,sans-serif;
+}
+
+/* Sidebar */
+
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+width:260px;
+height:100vh;
+background:#1e293b;
+padding:25px;
+overflow-y:auto;
+z-index:1000;
+}
+
+.logo{
+font-size:1.4rem;
+font-weight:bold;
+color:#0dcaf0;
+margin-bottom:35px;
+}
+
+.sidebar a{
+display:block;
+text-decoration:none;
+padding:15px;
+color:#cbd5e1;
+border-radius:15px;
+margin-bottom:10px;
+transition:.3s;
+}
+
+.sidebar a:hover,
+.sidebar .active{
+background:#0dcaf0;
+color:black;
+transform:translateX(5px);
+}
+
+/* Main */
+
+.main{
+margin-left:280px;
+padding:30px;
+}
+
+/* Stats Cards */
+
+.stats-card{
+background:rgba(255,255,255,.05);
+padding:25px;
+border-radius:25px;
+text-align:center;
+transition:.4s;
+box-shadow:0 0 20px rgba(0,0,0,.3);
+}
+
+.stats-card:hover{
+transform:translateY(-8px);
+box-shadow:0 0 20px rgba(13,202,240,.4);
+}
+
+.stats-number{
+font-size:40px;
+font-weight:bold;
+}
+
+.total{
+color:#0dcaf0;
+}
+
+.active{
+color:#22c55e;
+}
+
+.restricted{
+color:#ef4444;
+}
+
+/* Search Box */
+
+.search-box{
+background:rgba(255,255,255,.05);
+padding:20px;
+border-radius:20px;
+margin-top:30px;
+margin-bottom:30px;
+box-shadow:0 0 20px rgba(0,0,0,.2);
+}
+
+.form-control{
+background:#1e293b;
+border:none;
+color:white;
+}
+
+.form-control:focus{
+background:#1e293b;
+color:white;
+box-shadow:none;
+border:1px solid #0dcaf0;
+}
+
+/* Student Card */
+
+.student-card{
+background:rgba(255,255,255,.05);
+padding:25px;
+border-radius:25px;
+margin-bottom:20px;
+box-shadow:0 0 20px rgba(0,0,0,.25);
+animation:fadeUp .6s ease;
+transition:.4s;
+}
+
+.student-card:hover{
+transform:translateY(-8px);
+}
+
+.avatar{
+width:75px;
+height:75px;
+border-radius:50%;
+background:#0dcaf0;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+font-weight:bold;
+color:black;
+}
+
+.student-name{
+color:#0dcaf0;
+font-weight:bold;
+}
+
+.badge{
+font-size:.9rem;
+padding:8px 15px;
+}
+
+.btn{
+border-radius:30px;
+padding:10px 20px;
+}
+
+/* Animation */
+
+@keyframes fadeUp{
+
+from{
+opacity:0;
+transform:translateY(40px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+/* Mobile */
+
+.menu-btn{
+display:none;
+}
+
+@media(max-width:768px){
+
+.sidebar{
+left:-270px;
+transition:.4s;
+}
+
+.sidebar.show{
+left:0;
+}
+
+.main{
+margin-left:0;
+padding:20px;
+}
+
+.menu-btn{
+display:block;
+font-size:28px;
+color:#0dcaf0;
+margin-bottom:20px;
+cursor:pointer;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+
+<div class="sidebar" id="sidebar">
+
+<div class="logo">
+<i class="bi bi-code-slash"></i>
+VTT ADMIN
+</div>
+
+<a href="dashboard.html">
+<i class="bi bi-speedometer2"></i>
+ Dashboard
+</a>
+
+<a href="exercises.html">
+<i class="bi bi-journal-text"></i>
+ Exercises
+</a>
+
+<a href="students.html" class="active">
+<i class="bi bi-people"></i>
+ Students
+</a>
+
+<a href="#" id="logoutBtn">
+<i class="bi bi-box-arrow-right"></i>
+ Logout
+</a>
+
+</div>
+
+<!-- Main -->
+
+<div class="main">
+
+<div class="menu-btn" onclick="toggleSidebar()">
+<i class="bi bi-list"></i>
+</div>
+
+<h2 class="mb-4">
+👥 Student Management
+</h2>
+
+<!-- Statistics -->
+
+<div class="row g-4">
+
+<div class="col-md-4">
+<div class="stats-card">
+
+<div class="stats-number total" id="totalStudents">
+0
+</div>
+
+<h5>Total Students</h5>
+
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="stats-card">
+
+<div class="stats-number active" id="activeStudents">
+0
+</div>
+
+<h5>Active Students</h5>
+
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="stats-card">
+
+<div class="stats-number restricted" id="restrictedStudents">
+0
+</div>
+
+<h5>Restricted Students</h5>
+
+</div>
+</div>
+
+</div>
+
+<!-- Search -->
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchInput"
+class="form-control"
+placeholder="Search student by name or email">
+
+</div>
+
+<!-- Student List -->
+
+<div id="studentList">
+
+<!-- Example Card -->
+
+<div class="student-card">
+
+<div class="row">
+
+<div class="col-md-8">
+
+<div class="d-flex align-items-center">
+
+<div class="avatar">
+MA
+</div>
+
+<div class="ms-3">
+
+<h4 class="student-name">
+Mustapha Abubakar Iliyasu
+</h4>
+
+<p class="text-secondary mb-1">
+<i class="bi bi-envelope"></i>
+mustapha@gmail.com
+</p>
+
+<p class="mb-1">
+<i class="bi bi-telephone"></i>
+08012345678
+</p>
+
+<p>
+<i class="bi bi-calendar"></i>
+Registered: 22/06/2026
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4 text-md-end mt-3">
+
+<span class="badge bg-primary">
+Student
+</span>
+
+<br><br>
+
+<span class="badge bg-success">
+🟢 Active
+</span>
+
+</div>
+
+</div>
+
+<hr>
+
+<div class="d-flex flex-wrap gap-2">
+
+<button class="btn btn-danger">
+<i class="bi bi-lock"></i>
+ Restrict Account
+</button>
+
+<button class="btn btn-success">
+<i class="bi bi-unlock"></i>
+ Activate Account
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function toggleSidebar(){
+document.getElementById("sidebar").classList.toggle("show");
+}
+
+</script>
+
+<script type="module">
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import {
+getAuth,
+onAuthStateChanged,
+signOut
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+import {
+getFirestore,
+collection,
+doc,
+getDoc,
+updateDoc,
+onSnapshot,
+getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+import Swal
+from "https://cdn.jsdelivr.net/npm/sweetalert2@11/+esm";
+
+
+const firebaseConfig = {
+
+apiKey:"AIzaSyAhso-48HzA8H_-PLhtDqm0Ua1plFbQ3TQ",
+authDomain:"vttonlinelesson.firebaseapp.com",
+projectId:"vttonlinelesson",
+storageBucket:"vttonlinelesson.firebasestorage.app",
+messagingSenderId:"152996856308",
+appId:"1:152996856308:web:f0988069482ce7e893f9a1"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let allStudents=[];
+
+
+/* ADMIN PROTECTION */
+
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+
+window.location="login.html";
+return;
+
+}
+
+const adminSnap =
+await getDoc(doc(db,"users",user.uid));
+
+if(!adminSnap.exists()){
+
+window.location="login.html";
+return;
+
+}
+
+if(adminSnap.data().role!=="admin"){
+
+Swal.fire({
+icon:"error",
+title:"Access Denied"
+});
+
+window.location="../dashboard.html";
+
+return;
+
+}
+
+listenStudents();
+
+});
+
+
+/* REAL TIME STUDENTS */
+
+function listenStudents(){
+
+onSnapshot(collection(db,"users"),
+
+async(snapshot)=>{
+
+allStudents=[];
+
+let total=0;
+let active=0;
+let restricted=0;
+
+for(const studentDoc of snapshot.docs){
+
+const student=studentDoc.data();
+
+if(student.role==="student"){
+
+total++;
+
+if(student.status==="restricted"){
+
+restricted++;
+
+}else{
+
+active++;
+
+}
+
+
+/* Count exercises */
+
+let exerciseCount=0;
+
+const exerciseSnap =
+await getDocs(collection(db,"exercises"));
+
+exerciseSnap.forEach(ex=>{
+
+if(ex.data().userId===studentDoc.id){
+
+exerciseCount++;
+
+}
+
+});
+
+
+allStudents.push({
+
+id:studentDoc.id,
+exerciseCount,
+...student
+
+});
+
+}
+
+}
+
+
+document.getElementById("totalStudents").innerText=total;
+document.getElementById("activeStudents").innerText=active;
+document.getElementById("restrictedStudents").innerText=restricted;
+
+renderStudents(allStudents);
+
+});
+
+}
+
+function renderStudents(list){
+
+let html="";
+
+list.forEach(student=>{
+
+const initials = student.fullname
+? student.fullname
+.split(" ")
+.map(x=>x[0])
+.join("")
+.substring(0,2)
+.toUpperCase()
+:"?";
+
+const status=student.status || "active";
+
+html+=`
+
+<div class="student-card">
+
+<div class="row">
+
+<div class="col-md-8">
+
+<div class="d-flex">
+
+<div class="avatar">
+
+${initials}
+
+</div>
+
+<div class="ms-3">
+
+<h4 class="student-name">
+
+${student.fullname}
+
+</h4>
+
+<p class="text-secondary">
+
+${student.email}
+
+</p>
+
+<p>
+
+📞 ${student.phone || "No phone"}
+
+</p>
+
+<p>
+
+📚 Exercises Submitted:
+<b>${student.exerciseCount}</b>
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4 text-md-end">
+
+${status==="active"
+
+?
+
+`<span class="badge bg-success">
+🟢 Active
+</span>`
+
+:
+
+`<span class="badge bg-danger">
+🔒 Restricted
+</span>`
+
+}
+
+<br><br>
+
+${
+
+status==="active"
+
+?
+
+`
+<button
+class="btn btn-danger"
+onclick="restrictStudent('${student.id}')">
+
+Restrict
+
+</button>
+`
+
+:
+
+`
+<button
+class="btn btn-success"
+onclick="activateStudent('${student.id}')">
+
+Activate
+
+</button>
+`
+
+}
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("studentList").innerHTML=html;
+
+}
+
+</script>
+
+
+
+</body>
+</html>

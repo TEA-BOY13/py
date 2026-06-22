@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard | VISIONARYTECH TITAN</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+
+body{
+background:#0f172a;
+color:white;
+overflow-x:hidden;
+}
+
+/* TOGGLE BUTTON */
+.toggle-btn{
+position:fixed;
+top:15px;
+left:15px;
+z-index:1000;
+background:#0dcaf0;
+border:none;
+padding:10px 12px;
+border-radius:10px;
+color:black;
+font-size:20px;
+cursor:pointer;
+}
+
+/* Sidebar */
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+width:260px;
+height:100%;
+background:#1e293b;
+padding:20px;
+transition:.4s;
+overflow-y:auto;
+}
+
+.sidebar.hide{
+left:-260px;
+}
+
+/* Main */
+.main{
+margin-left:280px;
+padding:30px;
+transition:.4s;
+}
+
+.main.full{
+margin-left:20px;
+}
+
+/* Logo */
+.logo{
+font-size:1.3rem;
+font-weight:bold;
+color:#0dcaf0;
+margin-bottom:30px;
+}
+
+/* Sidebar links */
+.sidebar a{
+display:block;
+text-decoration:none;
+color:#cbd5e1;
+padding:15px;
+border-radius:15px;
+margin-bottom:10px;
+transition:.3s;
+}
+
+.sidebar a:hover{
+background:#0dcaf0;
+color:#000;
+transform:translateX(10px);
+}
+
+/* Cards */
+.card-box{
+background:rgba(255,255,255,.05);
+border-radius:20px;
+padding:25px;
+box-shadow:0 0 20px rgba(0,0,0,.3);
+animation:fadeUp .8s ease;
+}
+
+.stats-card{
+background:rgba(255,255,255,.05);
+padding:20px;
+border-radius:20px;
+text-align:center;
+transition:.4s;
+}
+
+.stats-card:hover{
+transform:translateY(-10px);
+box-shadow:0 0 20px rgba(13,202,240,.4);
+}
+
+.lesson-card{
+background:rgba(255,255,255,.05);
+padding:20px;
+border-radius:20px;
+transition:.4s;
+}
+
+.lesson-card:hover{
+transform:translateY(-10px);
+}
+
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(40px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+.profile-img{
+width:80px;
+height:80px;
+border-radius:50%;
+background:#0dcaf0;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:30px;
+font-weight:bold;
+margin:auto;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+.sidebar{
+left:-260px;
+position:fixed;
+z-index:999;
+}
+
+.sidebar.show{
+left:0;
+}
+
+.main{
+margin-left:20px;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- TOGGLE BUTTON -->
+<button class="toggle-btn" onclick="toggleSidebar()">
+<i class="bi bi-list"></i>
+</button>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+
+<div class="logo">
+<i class="bi bi-code-slash"></i>
+VISIONARYTECH TITAN
+</div>
+
+<a href="#"><i class="bi bi-house"></i> Dashboard</a>
+<a href="lessons.html"><i class="bi bi-book"></i> Lessons</a>
+<a href="submit.html"><i class="bi bi-upload"></i> Submit Exercise</a>
+<a href="#"><i class="bi bi-clock-history"></i> History</a>
+
+<a href="#" id="logoutBtn">
+<i class="bi bi-box-arrow-right"></i> Logout
+</a>
+
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main">
+
+<!-- Welcome -->
+<div class="card-box mb-4">
+
+<h2>
+Welcome,
+<span class="text-info" id="userName">Student</span> 👋
+</h2>
+
+<p class="text-secondary">
+Continue your Python learning journey with VISIONARYTECH TITAN.
+</p>
+
+</div>
+
+<!-- Profile -->
+<div class="card-box mb-4 text-center">
+
+<div class="profile-img" id="profileInitial">M</div>
+
+<h4 class="mt-3" id="profileName">Loading...</h4>
+<p class="text-secondary" id="profileEmail">Loading...</p>
+
+</div>
+
+<!-- STATS -->
+<div class="row g-4 mb-4">
+
+<div class="col-md-4">
+<div class="stats-card">
+<h1 class="text-info" id="submittedCount">0</h1>
+<h5>Exercises Submitted</h5>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="stats-card">
+<h1 class="text-success" id="reviewedCount">0</h1>
+<h5>Reviewed</h5>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="stats-card">
+<h1 class="text-warning" id="pendingCount">0</h1>
+<h5>Pending</h5>
+</div>
+</div>
+
+</div>
+
+<!-- CONTINUE -->
+<h3 class="mb-3">Continue Learning</h3>
+
+<div class="row g-4 mb-5">
+
+<div class="col-md-4">
+<div class="lesson-card">
+<h5>Lesson 1</h5>
+<p>Python Overview</p>
+<a href="lessons.html" class="btn btn-info w-100">Open</a>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="lesson-card">
+<h5>Lesson 2</h5>
+<p>Basic Syntax</p>
+<a href="lessons.html" class="btn btn-info w-100">Open</a>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="lesson-card">
+<h5>Lesson 3</h5>
+<p>Variables & Data Types</p>
+<a href="lessons.html" class="btn btn-info w-100">Open</a>
+</div>
+</div>
+
+</div>
+
+<!-- RECENT -->
+<div class="card-box">
+
+<h3 class="mb-4">Recent Exercises</h3>
+
+<div id="recentExercises" class="text-white">
+Loading...
+</div>
+
+</div>
+
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import {
+getAuth,
+onAuthStateChanged,
+signOut,
+setPersistence,
+browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+import {
+getFirestore,
+doc,
+getDoc,
+collection,
+query,
+where,
+getDocs
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11/+esm";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAhso-48HzA8H_-PLhtDqm0Ua1plFbQ3TQ",
+authDomain: "vttonlinelesson.firebaseapp.com",
+databaseURL: "https://vttonlinelesson-default-rtdb.firebaseio.com",
+projectId: "vttonlinelesson",
+storageBucket: "vttonlinelesson.firebasestorage.app",
+messagingSenderId: "152996856308",
+appId: "1:152996856308:web:f0988069482ce7e893f9a1",
+measurementId: "G-CC59VEFF32"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+await setPersistence(auth, browserLocalPersistence);
+
+/* SIDEBAR TOGGLE */
+window.toggleSidebar = function(){
+document.getElementById("sidebar").classList.toggle("hide");
+document.getElementById("main").classList.toggle("full");
+}
+
+/* AUTH CHECK */
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+window.location="login.html";
+return;
+}
+
+const uid = user.uid;
+
+const userDoc = await getDoc(doc(db,"users",uid));
+
+if(userDoc.exists()){
+const data = userDoc.data();
+
+document.getElementById("userName").innerText = data.fullname;
+document.getElementById("profileName").innerText = data.fullname;
+document.getElementById("profileEmail").innerText = data.email;
+
+document.getElementById("profileInitial").innerText =
+data.fullname.charAt(0).toUpperCase();
+}
+
+loadExercises(uid);
+
+});
+
+/* LOAD EXERCISES */
+async function loadExercises(uid){
+
+const q = query(
+collection(db,"exercises"),
+where("userId","==",uid)
+);
+
+const snap = await getDocs(q);
+
+let total = 0;
+let reviewed = 0;
+let pending = 0;
+
+let html = "";
+
+snap.forEach(docSnap=>{
+
+total++;
+
+const data = docSnap.data();
+
+if(data.rating > 0) reviewed++;
+else pending++;
+
+html += `
+<div class="card bg-dark text-white mb-3 p-3">
+
+<h6>Lesson ${data.lesson}</h6>
+<p>${data.answer}</p>
+
+<p>❤️ ${data.liked ? "Liked" : "Not liked"}</p>
+<p>⭐ ${data.rating || 0}/5</p>
+<p class="text-info">${data.comment || ""}</p>
+
+</div>
+`;
+});
+
+document.getElementById("submittedCount").innerText = total;
+document.getElementById("reviewedCount").innerText = reviewed;
+document.getElementById("pendingCount").innerText = pending;
+
+document.getElementById("recentExercises").innerHTML =
+html || "<p>No exercises yet</p>";
+}
+
+/* LOGOUT */
+document.getElementById("logoutBtn").addEventListener("click", ()=>{
+
+Swal.fire({
+title:"Logout?",
+icon:"warning",
+showCancelButton:true,
+confirmButtonText:"Yes"
+}).then(async(result)=>{
+
+if(result.isConfirmed){
+await signOut(auth);
+
+Swal.fire({
+icon:"success",
+title:"Logged out",
+timer:1200,
+showConfirmButton:false
+});
+
+setTimeout(()=>{
+window.location="login.html";
+},1200);
+
+}
+
+});
+
+});
+
+</script>
+
+</body>
+</html>

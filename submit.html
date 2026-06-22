@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Submit Exercise | VISIONARYTECH TITAN</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+
+body{
+background:#0f172a;
+color:white;
+}
+
+.container{
+max-width:900px;
+margin-top:40px;
+animation:fadeUp .8s ease;
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.card-box{
+background:rgba(255,255,255,.05);
+padding:25px;
+border-radius:20px;
+box-shadow:0 0 20px rgba(0,0,0,.3);
+}
+
+textarea{
+border-radius:15px;
+resize:none;
+}
+
+.btn-custom{
+border-radius:30px;
+}
+
+.exercise-card{
+background:rgba(255,255,255,.05);
+padding:15px;
+border-radius:15px;
+margin-top:15px;
+}
+
+.badge-like{
+background:#0dcaf0;
+}
+
+.badge-rating{
+background:#ffc107;
+color:black;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2 class="mb-3 text-center">
+📤 Submit Exercise
+</h2>
+
+<!-- Lesson Info -->
+<div class="card-box mb-4">
+
+<h5>
+Selected Lesson:
+<span class="text-info" id="lessonTitle">Loading...</span>
+</h5>
+
+</div>
+
+<!-- Submit Form -->
+<div class="card-box mb-4">
+
+<textarea id="answer" rows="6" class="form-control"
+placeholder="Write your Python exercise here..."></textarea>
+
+<button class="btn btn-info btn-custom w-100 mt-3"
+onclick="submitExercise()">
+
+Submit Exercise
+
+</button>
+
+</div>
+
+<!-- History -->
+<div class="card-box">
+
+<h4 class="mb-3">Your Submissions</h4>
+
+<div id="history">
+Loading...
+</div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import {
+getAuth,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+query,
+where,
+getDocs,
+orderBy,
+doc,
+getDoc
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAhso-48HzA8H_-PLhtDqm0Ua1plFbQ3TQ",
+authDomain: "vttonlinelesson.firebaseapp.com",
+databaseURL: "https://vttonlinelesson-default-rtdb.firebaseio.com",
+projectId: "vttonlinelesson",
+storageBucket: "vttonlinelesson.firebasestorage.app",
+messagingSenderId: "152996856308",
+appId: "1:152996856308:web:f0988069482ce7e893f9a1",
+measurementId: "G-CC59VEFF32"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* =========================
+   GET LESSON FROM URL
+========================= */
+const urlParams = new URLSearchParams(window.location.search);
+const lesson = urlParams.get("lesson") || 1;
+
+document.getElementById("lessonTitle").innerText =
+"Lesson " + lesson;
+
+/* =========================
+   SESSION CHECK
+========================= */
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+window.location = "login.html";
+return;
+}
+
+loadHistory(user.uid);
+
+window.currentUser = user;
+
+});
+
+/* =========================
+   SUBMIT EXERCISE
+========================= */
+window.submitExercise = async function(){
+
+const answer = document.getElementById("answer").value;
+
+if(answer.trim() === ""){
+Swal.fire("Error","Write something first!","error");
+return;
+}
+
+try{
+
+await addDoc(collection(db,"exercises"),{
+
+userId: window.currentUser.uid,
+lesson: lesson,
+answer: answer,
+liked: false,
+rating: 0,
+comment: "",
+timestamp: new Date()
+
+});
+
+Swal.fire({
+icon:"success",
+title:"Submitted!",
+text:"Your exercise has been sent to admin"
+});
+
+document.getElementById("answer").value="";
+
+loadHistory(window.currentUser.uid);
+
+}catch(err){
+
+Swal.fire("Error",err.message,"error");
+
+}
+
+}
+
+/* =========================
+   LOAD HISTORY
+========================= */
+async function loadHistory(uid){
+
+const q = query(
+collection(db,"exercises"),
+where("userId","==",uid)
+);
+
+const snap = await getDocs(q);
+
+let html = "";
+
+snap.forEach(docSnap=>{
+
+const data = docSnap.data();
+
+html += `
+<div class="exercise-card">
+
+<h6>Lesson ${data.lesson}</h6>
+
+<p>${data.answer}</p>
+
+<p>
+<span class="badge badge-like">
+❤️ ${data.liked ? "Liked" : "Not liked"}
+</span>
+
+<span class="badge badge-rating ms-2">
+⭐ ${data.rating}/5
+</span>
+</p>
+
+<p class="text-info">
+${data.comment || "No comment yet"}
+</p>
+
+</div>
+`;
+
+});
+
+document.getElementById("history").innerHTML =
+html || "<p>No submissions yet</p>";
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login | VISIONARYTECH TITAN</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#0f172a;
+color:white;
+}
+
+.login-card{
+width:100%;
+max-width:430px;
+background:rgba(255,255,255,.05);
+padding:35px;
+border-radius:20px;
+box-shadow:0 0 20px rgba(0,0,0,.3);
+animation:fadeUp .7s ease;
+}
+
+.logo{
+font-size:1.5rem;
+font-weight:bold;
+color:#0dcaf0;
+text-align:center;
+margin-bottom:25px;
+}
+
+.form-control{
+border-radius:12px;
+padding:12px;
+}
+
+.btn{
+border-radius:30px;
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="login-card">
+
+<div class="logo">
+<i class="bi bi-shield-lock"></i>
+VTT ADMIN LOGIN
+</div>
+
+<form id="loginForm">
+
+<div class="mb-3">
+<input
+type="email"
+class="form-control"
+id="email"
+placeholder="Admin Email"
+required>
+</div>
+
+<div class="mb-3">
+<input
+type="password"
+class="form-control"
+id="password"
+placeholder="Password"
+required>
+</div>
+
+<button class="btn btn-info w-100">
+Login
+</button>
+
+</form>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import {
+getAuth,
+signInWithEmailAndPassword,
+setPersistence,
+browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+import {
+getFirestore,
+doc,
+getDoc
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAhso-48HzA8H_-PLhtDqm0Ua1plFbQ3TQ",
+authDomain: "vttonlinelesson.firebaseapp.com",
+projectId: "vttonlinelesson",
+storageBucket: "vttonlinelesson.firebasestorage.app",
+messagingSenderId: "152996856308",
+appId: "1:152996856308:web:f0988069482ce7e893f9a1"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+await setPersistence(auth,browserLocalPersistence);
+
+document.getElementById("loginForm")
+.addEventListener("submit", async(e)=>{
+
+e.preventDefault();
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+try{
+
+Swal.fire({
+title:"Checking...",
+allowOutsideClick:false,
+didOpen:()=>{
+Swal.showLoading();
+}
+});
+
+const credential =
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+const uid = credential.user.uid;
+
+const snap =
+await getDoc(doc(db,"users",uid));
+
+if(!snap.exists()){
+
+await auth.signOut();
+
+Swal.fire(
+"Error",
+"Account not found",
+"error"
+);
+
+return;
+}
+
+const data = snap.data();
+
+/* ADMIN CHECK */
+if(data.role !== "admin"){
+
+await auth.signOut();
+
+Swal.fire({
+icon:"error",
+title:"Access Denied",
+text:"This account is not an admin."
+});
+
+return;
+
+}
+
+Swal.fire({
+icon:"success",
+title:"Welcome Admin",
+timer:1200,
+showConfirmButton:false
+});
+
+setTimeout(()=>{
+window.location="dashboard.html";
+},1200);
+
+}
+catch(error){
+
+Swal.fire({
+icon:"error",
+title:"Login Failed",
+text:error.message
+});
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
