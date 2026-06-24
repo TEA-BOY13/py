@@ -34,33 +34,68 @@ cursor:pointer;
 }
 
 /* Sidebar */
-.sidebar{
-position:fixed;
-left:0;
-top:0;
-width:260px;
+.sidenav{
+text-align:center;
 height:100%;
+width:0;
+position:fixed;
+z-index:1000;
+top:0;
+left:0;
 background:#1e293b;
-padding:20px;
-transition:.4s;
-overflow-y:auto;
+overflow-x:hidden;
+transition:.5s;
+padding-top:60px;
 }
 
-.sidebar.hide{
-left:-260px;
+.sidenav a{
+padding:15px;
+text-decoration:none;
+font-size:20px;
+color:#cbd5e1;
+display:block;
+transition:.3s;
+border-radius:15px;
+margin:8px;
 }
 
-/* Main */
+.sidenav a:hover{
+background:#0dcaf0;
+color:black;
+}
+
+.closebtn{
+position:absolute;
+top:10px;
+right:20px;
+font-size:40px !important;
+color:white;
+text-decoration:none;
+}
+
+.logo{
+font-size:1.3rem;
+font-weight:bold;
+color:#0dcaf0;
+margin-bottom:30px;
+}
+
+.toggle-btn{
+position:fixed;
+top:15px;
+left:15px;
+z-index:1100;
+background:#0dcaf0;
+border:none;
+padding:10px 15px;
+border-radius:10px;
+font-size:20px;
+}
+
 .main{
-margin-left:280px;
 padding:30px;
-transition:.4s;
+margin-left:0;
 }
-
-.main.full{
-margin-left:20px;
-}
-
 /* Logo */
 .logo{
 font-size:1.3rem;
@@ -160,12 +195,11 @@ margin-left:20px;
 <body>
 
 <!-- TOGGLE BUTTON -->
-<button class="toggle-btn" onclick="toggleSidebar()">
+<button class="toggle-btn" onclick="openNav()">
 <i class="bi bi-list"></i>
 </button>
-
 <!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
+<div id="mySidenav" class="sidenav">
 
 <div class="logo">
 <i class="bi bi-code-slash"></i>
@@ -175,7 +209,7 @@ VISIONARYTECH TITAN
 <a href="#"><i class="bi bi-house"></i> Dashboard</a>
 <a href="lessons.html"><i class="bi bi-book"></i> Lessons</a>
 <a href="submit.html"><i class="bi bi-upload"></i> Submit Exercise</a>
-<a href="#"><i class="bi bi-clock-history"></i> History</a>
+<a href="about.html"><i class="bi bi-clock-history"></i> About Us</a>
 
 <a href="#" id="logoutBtn">
 <i class="bi bi-box-arrow-right"></i> Logout
@@ -188,6 +222,10 @@ VISIONARYTECH TITAN
 
 <!-- Welcome -->
 <div class="card-box mb-4">
+ 
+<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
+&times;
+</a>
 
 <h2>
 Welcome,
@@ -323,9 +361,26 @@ const db = getFirestore(app);
 await setPersistence(auth, browserLocalPersistence);
 
 /* SIDEBAR TOGGLE */
-window.toggleSidebar = function(){
-document.getElementById("sidebar").classList.toggle("hide");
-document.getElementById("main").classList.toggle("full");
+window.openNav = function(){
+document.getElementById("mySidenav").style.width = "260px";
+}
+
+window.closeNav = function(){
+document.getElementById("mySidenav").style.width = "0";
+}
+
+window.onclick = function(event){
+
+const sidebar = document.getElementById("mySidenav");
+
+if(
+event.target !== sidebar &&
+!event.target.closest(".toggle-btn") &&
+!event.target.closest(".sidenav")
+){
+sidebar.style.width = "0";
+}
+
 }
 
 /* AUTH CHECK */
