@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VisiOnaryTech Titan videos</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: #f5f5f5;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* NAVBAR */
+#navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background: rgba(10, 42, 67, 0.7);
+  backdrop-filter: blur(10px);
+  color: white;
+  z-index: 1000;
+  transition: top 0.4s;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+#nav-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+#nav-links a {
+  color: white;
+  text-decoration: none;
+}
+
+/* MOBILE NAV */
+@media(max-width:768px){
+  .menu-toggle {
+    display: block;
+  }
+
+  #nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 75%;
+    height: 100vh;
+    background: rgba(10,42,67,0.95);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+  }
+
+  #nav-links.active {
+    right: 0;
+  }
+}
+
+/* HEADER */
+.header {
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+  url('https://images.unsplash.com/photo-1523580846011-d3a5bc25702b');
+  background-size: cover;
+}
+
+/* SECTION ANIMATION */
+.section {
+  padding: 80px 20px;
+  opacity: 0;
+  transform: translateY(60px);
+  transition: 1s;
+}
+
+.section.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* VIDEO GRID */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 20px;
+}
+
+/* VIDEO CARD */
+.video-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.video-card:hover {
+  transform: scale(1.05);
+}
+
+/* THUMB */
+.thumb {
+  position: relative;
+}
+
+.thumb img {
+  width: 100%;
+}
+
+/* PLAY BUTTON */
+.play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 30px;
+  padding: 15px 20px;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.video-card:hover .play-btn {
+  background: #00c3ff;
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+.video-card p {
+  padding: 10px;
+  text-align: center;
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.95);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.4s;
+}
+
+.modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* MODAL CONTENT */
+.modal-content {
+  position: relative;
+  width: 80%;
+  max-width: 900px;
+  animation: scaleIn 0.4s ease;
+}
+
+.modal iframe {
+  width: 100%;
+  height: 500px;
+  border-radius: 10px;
+}
+
+/* CLOSE BUTTON */
+.close-btn {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+}
+
+/* ANIMATION */
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal iframe {
+    height: 250px;
+  }
+
+  .modal-content {
+    width: 95%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <h2>VisiOnaryTech Titan</h2>
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  <ul id="nav-links">
+    <li><a href="dashboard.html">dashboard</a></li>
+    <li><a href="#videos">Videos</a></li>
+    <li><a href="lessons.html">lessons</a></li>
+    <li><a href="contact.html">contact</a></li>
+  </ul>
+</nav>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>VISIONARYTECH TITAN</h1>
+</div>
+
+<!-- VIDEOS -->
+<section class="section">
+  <div class="video-grid">
+
+    <div class="video-card" onclick="openVideo('vyJKPCVLKjU')">
+      <div class="thumb">
+        <img src="https://img.youtube.com/vi/vyJKPCVLKjU/0.jpg">
+        <div class="play-btn">▶</div>
+      </div>
+      <p>Python overview and basic syntax</p>
+    </div>
+
+    <div class="video-card" onclick="openVideo('ye_H26RPwK8')">
+      <div class="thumb">
+        <img src="https://img.youtube.com/vi/ye_H26RPwK8/0.jpg">
+        <div class="play-btn">▶</div>
+      </div>
+      <p>Graduation Ceremony 2025</p>
+    </div>
+
+  
+
+    <div class="video-card" onclick="openVideo('S0MBgm8E8Nc')">
+      <div class="thumb">
+        <img src="https://img.youtube.com/vi/S0MBgm8E8Nc/0.jpg">
+        <div class="play-btn">▶</div>
+      </div>
+      <p>Student Performances</p>
+    </div>
+
+    <div class="video-card" onclick="openVideo('ysz5S6PUM-U')">
+      <div class="thumb">
+        <img src="https://img.youtube.com/vi/ysz5S6PUM-U/0.jpg">
+        <div class="play-btn">▶</div>
+      </div>
+      <p>Award Presentation</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="videoModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeVideo()">✖</span>
+    <iframe 
+      id="videoFrame"
+      src=""
+      frameborder="0"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<script>
+// MENU
+function toggleMenu() {
+  document.getElementById("nav-links").classList.toggle("active");
+}
+
+// NAV SCROLL
+let lastScroll = 0;
+const navbar = document.getElementById("navbar");
+
+window.addEventListener("scroll", () => {
+  let current = window.pageYOffset;
+  navbar.style.top = current > lastScroll ? "-90px" : "0";
+  lastScroll = current;
+});
+
+// SCROLL ANIMATION
+const sections = document.querySelectorAll('.section');
+window.addEventListener('scroll', () => {
+  sections.forEach(sec => {
+    const top = sec.getBoundingClientRect().top;
+    if (top < window.innerHeight - 100) {
+      sec.classList.add('show');
+    }
+  });
+});
+
+// OPEN VIDEO
+function openVideo(id) {
+  document.getElementById("videoModal").classList.add("active");
+  document.getElementById("videoFrame").src =
+    "https://www.youtube.com/embed/" + id + "?autoplay=1";
+}
+
+// CLOSE VIDEO
+function closeVideo() {
+  document.getElementById("videoModal").classList.remove("active");
+  document.getElementById("videoFrame").src = "";
+}
+
+// ESC KEY CLOSE
+document.addEventListener("keydown", function(e){
+  if(e.key === "Escape"){
+    closeVideo();
+  }
+});
+</script>
+
+</body>
+</html> 
