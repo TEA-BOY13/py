@@ -4,80 +4,41 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Students | VISIONARYTECH TITAN</title>
+<title>Learners Management | VISIONARYTECH TITAN</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
 
 body{
 background:#0f172a;
 color:white;
-overflow-x:hidden;
 font-family:Segoe UI,sans-serif;
+overflow-x:hidden;
 }
 
-/* Sidebar */
-
-.sidebar{
-position:fixed;
-left:0;
-top:0;
-width:260px;
-height:100vh;
-background:#1e293b;
+.header{
+background:linear-gradient(135deg,#0dcaf0,#2563eb);
 padding:25px;
-overflow-y:auto;
-z-index:1000;
+border-radius:20px;
+margin-bottom:30px;
+animation:fadeDown .6s;
 }
 
-.logo{
-font-size:1.4rem;
+.header h2{
+margin:0;
 font-weight:bold;
-color:#0dcaf0;
-margin-bottom:35px;
 }
-
-.sidebar a{
-display:block;
-text-decoration:none;
-padding:15px;
-color:#cbd5e1;
-border-radius:15px;
-margin-bottom:10px;
-transition:.3s;
-}
-
-.sidebar a:hover,
-.sidebar .active{
-background:#0dcaf0;
-color:black;
-transform:translateX(5px);
-}
-
-/* Main */
-
-.main{
-margin-left:280px;
-padding:30px;
-}
-
-/* Stats Cards */
 
 .stats-card{
 background:rgba(255,255,255,.05);
-padding:25px;
-border-radius:25px;
+padding:20px;
+border-radius:20px;
 text-align:center;
 transition:.4s;
-box-shadow:0 0 20px rgba(0,0,0,.3);
+height:100%;
 }
 
 .stats-card:hover{
@@ -86,31 +47,30 @@ box-shadow:0 0 20px rgba(13,202,240,.4);
 }
 
 .stats-number{
-font-size:40px;
+font-size:35px;
 font-weight:bold;
-}
-
-.total{
 color:#0dcaf0;
 }
 
-.active{
-color:#22c55e;
-}
-
-.restricted{
-color:#ef4444;
-}
-
-/* Search Box */
-
-.search-box{
+.table-card{
 background:rgba(255,255,255,.05);
-padding:20px;
+padding:25px;
 border-radius:20px;
-margin-top:30px;
-margin-bottom:30px;
-box-shadow:0 0 20px rgba(0,0,0,.2);
+margin-top:25px;
+animation:fadeUp .8s;
+}
+
+.table{
+color:white;
+}
+
+.table thead{
+background:#0dcaf0;
+color:black;
+}
+
+.table tbody tr:hover{
+background:rgba(255,255,255,.06);
 }
 
 .form-control{
@@ -122,55 +82,35 @@ color:white;
 .form-control:focus{
 background:#1e293b;
 color:white;
-box-shadow:none;
-border:1px solid #0dcaf0;
+box-shadow:0 0 10px #0dcaf0;
 }
 
-/* Student Card */
-
-.student-card{
-background:rgba(255,255,255,.05);
-padding:25px;
-border-radius:25px;
-margin-bottom:20px;
-box-shadow:0 0 20px rgba(0,0,0,.25);
-animation:fadeUp .6s ease;
-transition:.4s;
+.badge-active{
+background:#198754;
 }
 
-.student-card:hover{
-transform:translateY(-8px);
+.badge-disabled{
+background:#dc3545;
 }
 
-.avatar{
-width:75px;
-height:75px;
-border-radius:50%;
-background:#0dcaf0;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:28px;
-font-weight:bold;
-color:black;
-}
-
-.student-name{
-color:#0dcaf0;
-font-weight:bold;
-}
-
-.badge{
-font-size:.9rem;
-padding:8px 15px;
-}
-
-.btn{
+.btn-action{
+margin:2px;
 border-radius:30px;
-padding:10px 20px;
 }
 
-/* Animation */
+@keyframes fadeDown{
+
+from{
+opacity:0;
+transform:translateY(-30px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
 
 @keyframes fadeUp{
 
@@ -186,257 +126,171 @@ transform:translateY(0);
 
 }
 
-/* Mobile */
-
-.menu-btn{
-display:none;
-}
-
-@media(max-width:768px){
-
-.sidebar{
-left:-270px;
-transition:.4s;
-}
-
-.sidebar.show{
-left:0;
-}
-
-.main{
-margin-left:0;
-padding:20px;
-}
-
-.menu-btn{
-display:block;
-font-size:28px;
-color:#0dcaf0;
-margin-bottom:20px;
-cursor:pointer;
-}
-
-}
-
 </style>
+
 </head>
 <body>
 
-<!-- Sidebar -->
+<div class="container py-4">
 
-<div class="sidebar" id="sidebar">
+<div class="header">
 
-<div class="logo">
-<i class="bi bi-code-slash"></i>
-VTT ADMIN
-</div>
-
-<a href="dashboard.html">
-<i class="bi bi-speedometer2"></i>
- Dashboard
-</a>
-
-<a href="exercises.html">
-<i class="bi bi-journal-text"></i>
- Exercises
-</a>
-
-<a href="students.html" class="active">
-<i class="bi bi-people"></i>
- Students
-</a>
-
-<a href="#" id="logoutBtn">
-<i class="bi bi-box-arrow-right"></i>
- Logout
-</a>
-
-</div>
-
-<!-- Main -->
-
-<div class="main">
-
-<div class="menu-btn" onclick="toggleSidebar()">
-<i class="bi bi-list"></i>
-</div>
-
-<h2 class="mb-4">
-👥 Student Management
+<h2>
+<i class="bi bi-people-fill"></i>
+ Learners Management
 </h2>
 
-<!-- Statistics -->
+<p class="mb-0">
+Manage registered learners of VISIONARYTECH TITAN.
+</p>
+
+</div>
 
 <div class="row g-4">
 
 <div class="col-md-4">
+
 <div class="stats-card">
 
-<div class="stats-number total" id="totalStudents">
-0
-</div>
+<div class="stats-number" id="totalLearners">0</div>
 
-<h5>Total Students</h5>
+<h5>Total Learners</h5>
 
 </div>
+
 </div>
 
 <div class="col-md-4">
+
 <div class="stats-card">
 
-<div class="stats-number active" id="activeStudents">
-0
-</div>
+<div class="stats-number text-success" id="activeLearners">0</div>
 
-<h5>Active Students</h5>
+<h5>Active</h5>
 
 </div>
+
 </div>
 
 <div class="col-md-4">
+
 <div class="stats-card">
 
-<div class="stats-number restricted" id="restrictedStudents">
-0
-</div>
+<div class="stats-number text-danger" id="disabledLearners">0</div>
 
-<h5>Restricted Students</h5>
+<h5>Disabled</h5>
 
-</div>
 </div>
 
 </div>
 
-<!-- Search -->
+</div>
 
-<div class="search-box">
+<div class="table-card">
+
+<div class="row mb-3">
+
+<div class="col-md-6">
 
 <input
 type="text"
 id="searchInput"
 class="form-control"
-placeholder="Search student by name or email">
+placeholder="Search learner by name or email...">
 
 </div>
 
-<!-- Student List -->
+<div class="col-md-6 text-end">
 
-<div id="studentList">
+<button class="btn btn-info">
 
-<!-- Example Card -->
+<i class="bi bi-arrow-clockwise"></i>
 
-<div class="student-card">
+Refresh
 
-<div class="row">
-
-<div class="col-md-8">
-
-<div class="d-flex align-items-center">
-
-<div class="avatar">
-MA
-</div>
-
-<div class="ms-3">
-
-<h4 class="student-name">
-Mustapha Abubakar Iliyasu
-</h4>
-
-<p class="text-secondary mb-1">
-<i class="bi bi-envelope"></i>
-mustapha@gmail.com
-</p>
-
-<p class="mb-1">
-<i class="bi bi-telephone"></i>
-08012345678
-</p>
-
-<p>
-<i class="bi bi-calendar"></i>
-Registered: 22/06/2026
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-md-4 text-md-end mt-3">
-
-<span class="badge bg-primary">
-Student
-</span>
-
-<br><br>
-
-<span class="badge bg-success">
-🟢 Active
-</span>
-
-</div>
-
-</div>
-
-<hr>
-
-<div class="d-flex flex-wrap gap-2">
-
-<button class="btn btn-danger">
-<i class="bi bi-lock"></i>
- Restrict Account
-</button>
-
-<button class="btn btn-success">
-<i class="bi bi-unlock"></i>
- Activate Account
 </button>
 
 </div>
 
 </div>
 
+<div class="table-responsive">
+
+<table class="table table-hover align-middle">
+
+<thead>
+
+<tr>
+
+<th>#</th>
+
+<th>Full Name</th>
+
+<th>Email</th>
+
+<th>Phone</th>
+
+<th>Role</th>
+
+<th>Status</th>
+
+<th>Registered</th>
+
+<th width="220">Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody id="learnersTable">
+
+<tr>
+
+<td colspan="8" class="text-center py-5">
+
+<div class="spinner-border text-info"></div>
+
+<p class="mt-3">
+
+Loading learners...
+
+</p>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
 </div>
 
 </div>
 
-<script>
-
-function toggleSidebar(){
-document.getElementById("sidebar").classList.toggle("show");
-}
-
-</script>
-
-<script type="module">
 <script type="module">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 
 import {
 getAuth,
 onAuthStateChanged,
 signOut
-}
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
 import {
 getFirestore,
 collection,
+getDocs,
 doc,
 getDoc,
 updateDoc,
-onSnapshot,
-getDocs
-}
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+deleteDoc
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-import Swal
-from "https://cdn.jsdelivr.net/npm/sweetalert2@11/+esm";
-
+import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11/+esm";
 
 const firebaseConfig = {
 
@@ -449,31 +303,30 @@ appId:"1:152996856308:web:f0988069482ce7e893f9a1"
 
 };
 
-const app = initializeApp(firebaseConfig);
+const app=initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
-const db = getFirestore(app);
+const auth=getAuth(app);
 
-let allStudents=[];
+const db=getFirestore(app);
 
+let learners=[];
 
-/* ADMIN PROTECTION */
+/* ---------------- ADMIN PROTECTION ---------------- */
 
-onAuthStateChanged(auth, async(user)=>{
+onAuthStateChanged(auth,async(user)=>{
 
 if(!user){
 
-window.location="login.html";
+location="login.html";
 return;
 
 }
 
-const adminSnap =
-await getDoc(doc(db,"users",user.uid));
+const adminSnap=await getDoc(doc(db,"users",user.uid));
 
 if(!adminSnap.exists()){
 
-window.location="login.html";
+location="../login.html";
 return;
 
 }
@@ -485,42 +338,38 @@ icon:"error",
 title:"Access Denied"
 });
 
-window.location="../dashboard.html";
-
+location="../dashboard.html";
 return;
 
 }
 
-listenStudents();
+loadLearners();
 
 });
 
+/* ---------------- LOAD ---------------- */
 
-/* REAL TIME STUDENTS */
+async function loadLearners(){
 
-function listenStudents(){
-
-onSnapshot(collection(db,"users"),
-
-async(snapshot)=>{
-
-allStudents=[];
+learners=[];
 
 let total=0;
 let active=0;
-let restricted=0;
+let disabled=0;
 
-for(const studentDoc of snapshot.docs){
+const snap=await getDocs(collection(db,"users"));
 
-const student=studentDoc.data();
+snap.forEach(d=>{
 
-if(student.role==="student"){
+const data=d.data();
+
+if(data.role==="learner"){
 
 total++;
 
-if(student.status==="restricted"){
+if(data.status==="disabled"){
 
-restricted++;
+disabled++;
 
 }else{
 
@@ -528,181 +377,193 @@ active++;
 
 }
 
+learners.push({
 
-/* Count exercises */
+id:d.id,
 
-let exerciseCount=0;
-
-const exerciseSnap =
-await getDocs(collection(db,"exercises"));
-
-exerciseSnap.forEach(ex=>{
-
-if(ex.data().userId===studentDoc.id){
-
-exerciseCount++;
-
-}
-
-});
-
-
-allStudents.push({
-
-id:studentDoc.id,
-exerciseCount,
-...student
+...data
 
 });
 
 }
 
-}
-
-
-document.getElementById("totalStudents").innerText=total;
-document.getElementById("activeStudents").innerText=active;
-document.getElementById("restrictedStudents").innerText=restricted;
-
-renderStudents(allStudents);
-
 });
 
+document.getElementById("totalLearners").innerHTML=total;
+document.getElementById("activeLearners").innerHTML=active;
+document.getElementById("disabledLearners").innerHTML=disabled;
+
+renderTable(learners);
+
 }
 
-function renderStudents(list){
+/* ---------------- TABLE ---------------- */
+
+function renderTable(list){
 
 let html="";
 
-list.forEach(student=>{
+list.forEach((u,index)=>{
 
-const initials = student.fullname
-? student.fullname
-.split(" ")
-.map(x=>x[0])
-.join("")
-.substring(0,2)
-.toUpperCase()
-:"?";
+const date=u.createdAt?.toDate?
+u.createdAt.toDate().toLocaleDateString():
+"-";
 
-const status=student.status || "active";
+const status=u.status==="disabled"
+?'<span class="badge bg-danger">Disabled</span>'
+:'<span class="badge bg-success">Active</span>';
 
 html+=`
 
-<div class="student-card">
+<tr>
 
-<div class="row">
+<td>${index+1}</td>
 
-<div class="col-md-8">
+<td>${u.fullname||""}</td>
 
-<div class="d-flex">
+<td>${u.email||""}</td>
 
-<div class="avatar">
+<td>${u.phone||"-"}</td>
 
-${initials}
+<td>${u.role}</td>
 
-</div>
+<td>${status}</td>
 
-<div class="ms-3">
+<td>${date}</td>
 
-<h4 class="student-name">
+<td>
 
-${student.fullname}
-
-</h4>
-
-<p class="text-secondary">
-
-${student.email}
-
-</p>
-
-<p>
-
-📞 ${student.phone || "No phone"}
-
-</p>
-
-<p>
-
-📚 Exercises Submitted:
-<b>${student.exerciseCount}</b>
-
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-md-4 text-md-end">
-
-${status==="active"
-
-?
-
-`<span class="badge bg-success">
-🟢 Active
-</span>`
-
-:
-
-`<span class="badge bg-danger">
-🔒 Restricted
-</span>`
-
-}
-
-<br><br>
-
-${
-
-status==="active"
-
-?
-
-`
 <button
-class="btn btn-danger"
-onclick="restrictStudent('${student.id}')">
+class="btn btn-warning btn-sm btn-action"
+onclick="toggleStatus('${u.id}','${u.status||"active"}')">
 
-Restrict
+<i class="bi bi-slash-circle"></i>
+
+${u.status==="disabled"?"Enable":"Disable"}
 
 </button>
-`
 
-:
-
-`
 <button
-class="btn btn-success"
-onclick="activateStudent('${student.id}')">
+class="btn btn-danger btn-sm btn-action"
+onclick="deleteLearner('${u.id}')">
 
-Activate
+<i class="bi bi-trash"></i>
+
+Delete
 
 </button>
-`
 
-}
+</td>
 
-</div>
-
-</div>
-
-</div>
+</tr>
 
 `;
 
 });
 
-document.getElementById("studentList").innerHTML=html;
+if(html===""){
+
+html=`
+<tr>
+<td colspan="8" class="text-center">
+No learners found.
+</td>
+</tr>
+`;
 
 }
 
+document.getElementById("learnersTable").innerHTML=html;
+
+}
+
+/* ---------------- SEARCH ---------------- */
+
+document.getElementById("searchInput").addEventListener("keyup",e=>{
+
+const key=e.target.value.toLowerCase();
+
+const filtered=learners.filter(x=>
+
+(x.fullname||"").toLowerCase().includes(key) ||
+
+(x.email||"").toLowerCase().includes(key)
+
+);
+
+renderTable(filtered);
+
+});
+
+/* ---------------- DISABLE ---------------- */
+
+window.toggleStatus=async(id,status)=>{
+
+const newStatus=status==="disabled"
+?"active"
+:"disabled";
+
+await updateDoc(doc(db,"users",id),{
+
+status:newStatus
+
+});
+
+Swal.fire({
+
+icon:"success",
+
+title:"Updated"
+
+});
+
+loadLearners();
+
+};
+
+/* ---------------- DELETE ---------------- */
+
+window.deleteLearner=async(id)=>{
+
+const ok=await Swal.fire({
+
+title:"Delete learner?",
+
+text:"Firestore record will be deleted.",
+
+icon:"warning",
+
+showCancelButton:true
+
+});
+
+if(!ok.isConfirmed) return;
+
+await deleteDoc(doc(db,"users",id));
+
+Swal.fire({
+
+icon:"success",
+
+title:"Deleted"
+
+});
+
+loadLearners();
+
+};
+
+/* ---------------- LOGOUT ---------------- */
+
+window.logout=async()=>{
+
+await signOut(auth);
+
+location="login.html";
+
+};
+
 </script>
-
-
 
 </body>
 </html>
